@@ -3,27 +3,52 @@
 # ------------------------------------------------------
 
 type Auth {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  """jwt access token"""
+  accessToken: String!
 }
 
+type User {
+  id: Int!
+  email: String!
+  password: String!
+  role: UserRole!
+  createdAt: DateTime!
+}
+
+"""User roles"""
+enum UserRole {
+  ADMIN
+  STAFF
+  USER
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
-  auth(id: Int!): Auth!
+  auth: [Auth!]!
+
+  """Get user by id"""
+  getUser(id: Int!): User!
 }
 
 type Mutation {
-  createAuth(createAuthInput: CreateAuthInput!): Auth!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
-  removeAuth(id: Int!): Auth!
+  login(loginInput: LoginInput!): Auth!
+  createUser(createUserInput: CreateUserInput!): User!
 }
 
-input CreateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input LoginInput {
+  """user email"""
+  email: String!
+
+  """user password"""
+  password: String!
 }
 
-input UpdateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input CreateUserInput {
+  email: String!
+  password: String!
+  role: UserRole
 }

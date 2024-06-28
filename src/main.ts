@@ -5,12 +5,15 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { ConfigName } from './config/config-names.enum';
 import { IAppConfig } from './config/app.config';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: { credentials: true, origin: true },
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser());
+
   const configService = app.get(ConfigService);
   const appConfig = configService.get<IAppConfig>(ConfigName.APP);
 
