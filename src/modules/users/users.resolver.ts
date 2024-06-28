@@ -15,6 +15,7 @@ import { GetUserUseCase } from './use-cases/get-user.use-case';
 import { ExecutionContext } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CachingService } from '../caching/caching.service';
+import { CacheTTL } from '@nestjs/cache-manager';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -34,6 +35,7 @@ export class UsersResolver {
   //   return;
   // }
 
+  @CacheTTL(5000)
   @Query(() => User, { description: 'Get user by id' })
   async getUser(
     @Args('id', { type: () => Int }) id: number,

@@ -5,6 +5,7 @@ export interface IRedisConfig {
   redisHost: string;
   redisPort: number;
   redisCacheDb: number;
+  redisTokenDb: number;
 }
 
 export const redisConfig = registerAs(ConfigName.REDIS, () => {
@@ -12,6 +13,7 @@ export const redisConfig = registerAs(ConfigName.REDIS, () => {
     redisHost: process.env.REDIS_HOST || 'localhost',
     redisPort: +process.env.REDS_PORT || 6379,
     redisCacheDb: +process.env.REDIS_CACHE_DB,
+    redisTokenDb: +process.env.REDIS_TOKEN_DB,
   };
 
   if (Object.values(config).includes(undefined)) {
