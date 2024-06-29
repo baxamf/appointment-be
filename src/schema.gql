@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """jwt access token"""
-  accessToken: String!
-}
-
 type User {
   id: Int!
   email: String!
@@ -27,9 +22,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Query {
-  auth: [Auth!]!
+type Auth {
+  """jwt access token"""
+  accessToken: String!
 
+  """jwt refresh token"""
+  refreshToken: String!
+
+  """user"""
+  user: User!
+}
+
+type Query {
   """Get user by id"""
   getUser(id: Int!): User!
 }
