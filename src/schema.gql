@@ -2,10 +2,9 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserResponse {
   id: Int!
   email: String!
-  password: String!
   role: UserRole!
   createdAt: DateTime!
 }
@@ -26,21 +25,30 @@ type Auth {
   """jwt access token"""
   accessToken: String!
 
-  """jwt refresh token"""
-  refreshToken: String!
-
   """user"""
-  user: User!
+  user: UserResponse!
+}
+
+type MessageResponse {
+  """Response message"""
+  message: String!
 }
 
 type Query {
+  """Refresh access token"""
+  refresh: Auth!
+
+  """Logout user"""
+  logout: MessageResponse!
+
   """Get user by id"""
-  getUser(id: Int!): User!
+  getUser(id: Int!): UserResponse!
 }
 
 type Mutation {
+  """Login user"""
   login(loginInput: LoginInput!): Auth!
-  createUser(createUserInput: CreateUserInput!): User!
+  createUser(createUserInput: CreateUserInput!): UserResponse!
 }
 
 input LoginInput {

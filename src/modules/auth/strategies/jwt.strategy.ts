@@ -5,10 +5,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { IAppConfig } from 'src/config/app.config';
 import { ConfigName } from 'src/config/config-names.enum';
 import { JwtUserPayload } from 'src/modules/common/types';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService,
+  ) {
     const cfg = configService.get<IAppConfig>(ConfigName.APP);
 
     super({
@@ -19,6 +23,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtUserPayload) {
-    return payload;
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: { id: payload.userId },
+    });
+
+    return user;
   }
 }

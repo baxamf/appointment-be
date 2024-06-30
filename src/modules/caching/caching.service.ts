@@ -28,10 +28,14 @@ export class CachingService {
   }
 
   async setToken(key: string, value: string, ttl?: number) {
-    return await this.tokenStorage.set(key, value, 'EX', ttl);
+    await this.tokenStorage.set(key, value, 'EX', ttl);
   }
 
   async getToken(key: string) {
     return await this.tokenStorage.get(key);
+  }
+
+  async removeToken(key: string) {
+    await this.tokenStorage.del(key);
   }
 }

@@ -1,6 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { UserRole } from '../enums/user-role.enum';
-
 @ObjectType()
 export class User {
   @Field(() => Int, { nullable: false })

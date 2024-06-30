@@ -10,6 +10,8 @@ import { JwtRefreshCookieGuard } from './guards/jwt-refresh-cookie.guard';
 import { LoginGuard } from './guards/login.guard';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { AuthenticateUserUseCase } from './use-cases/authenticate-user.use-case';
+import { LogoutUserUseCase } from './use-cases/logout-user.use-case';
 
 @Module({
   imports: [PassportModule, JwtModule.register({})],
@@ -23,6 +25,8 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
     JwtRefreshGuard,
     JwtRefreshCookieGuard,
     LoginGuard,
+    AuthenticateUserUseCase,
+    LogoutUserUseCase,
   ],
 })
 export class AuthModule {}
