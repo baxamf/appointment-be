@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { User } from './user.entity';
 
 @ObjectType()
 export class UserSocial {
@@ -17,7 +16,4 @@ export class UserSocial {
 
   @Field(() => Int, { nullable: false, defaultValue: 1 })
   order!: number;
-
-  @Field(() => User, { nullable: false })
-  user?: User;
 }

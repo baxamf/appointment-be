@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { User } from './user.entity';
 
 @ObjectType()
 export class UserProfile {
@@ -17,7 +16,4 @@ export class UserProfile {
 
   @Field(() => String, { nullable: true })
   avatar!: string | null;
-
-  @Field(() => User, { nullable: false })
-  user?: User;
 }

@@ -8,7 +8,6 @@ type UserProfile {
   lastName: String
   phone: String!
   avatar: String
-  user: User!
 }
 
 type UserSocial {
@@ -17,13 +16,11 @@ type UserSocial {
   name: String!
   link: String!
   order: Int!
-  user: User!
 }
 
-type User {
+type UserResponse {
   id: Int!
   email: String!
-  password: String!
   role: UserRole!
   createdAt: DateTime!
   profile: UserProfile
@@ -41,15 +38,6 @@ enum UserRole {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type UserResponse {
-  id: Int!
-  email: String!
-  role: UserRole!
-  createdAt: DateTime!
-  profile: UserProfile!
-  socials: UserSocial!
-}
 
 type Auth {
   """jwt access token"""
@@ -72,13 +60,21 @@ type Query {
   logout: MessageResponse!
 
   """Get user by id"""
-  getUser(id: Int!): UserResponse!
+  getUser(userId: Int!): UserResponse!
+
+  """Get my user data"""
+  getMe: UserResponse!
 }
 
 type Mutation {
   """Login user"""
   login(loginInput: LoginInput!): Auth!
   createUser(createUserInput: CreateUserInput!): UserResponse!
+  createMyProfile(createUserProfileInput: CreateUserProfileInput!): UserProfile!
+  updateMyProfile(updateUserProfileInput: UpdateUserProfileInput!): UserProfile!
+  createMySocial(createUserSocialInput: CreateUserSocialInput!): UserSocial!
+  updateMySocial(updateUserSocialInput: UpdateUserSocialInput!): UserSocial!
+  removeMySocial(socialId: Int!): UserSocial!
 }
 
 input LoginInput {
@@ -93,4 +89,31 @@ input CreateUserInput {
   email: String!
   password: String!
   role: UserRole
+}
+
+input CreateUserProfileInput {
+  firstName: String!
+  lastName: String
+  phone: String!
+  avatar: String
+}
+
+input UpdateUserProfileInput {
+  firstName: String
+  lastName: String
+  phone: String
+  avatar: String
+}
+
+input CreateUserSocialInput {
+  name: String!
+  link: String!
+  order: Int
+}
+
+input UpdateUserSocialInput {
+  name: String
+  link: String
+  order: Int
+  id: Int!
 }
