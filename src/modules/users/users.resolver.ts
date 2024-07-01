@@ -1,19 +1,29 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { CreateUserUseCase } from './use-cases/create-user.use-case';
 import { GetUserUseCase } from './use-cases/get-user.use-case';
-import { CachingService } from '../caching/caching.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserResponse } from './entities/user-response.entity';
+import { UserProfile } from './entities/user-profile.entity';
+import { PrismaService } from '../prisma/prisma.service';
+import { UserSocial } from './entities/user-social.entity';
 
 @Resolver(() => UserResponse)
 export class UsersResolver {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly cache: CachingService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => UserResponse)
@@ -31,4 +41,18 @@ export class UsersResolver {
   // updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
   //   return;
   // }
+
+  @ResolveField('profile', () => UserProfile)
+  getUserProfile(@Parent() user: UserResponse) {
+    return this.prisma.user
+      .findUniqueOrThrow({ where: { id: user.id } })
+      .profile();
+  }
+
+  @ResolveField('socials', () => UserSocial)
+  getUserSocials(@Parent() user: UserResponse) {
+    return this.prisma.user
+      .findUniqueOrThrow({ where: { id: user.id } })
+      .socials();
+  }
 }

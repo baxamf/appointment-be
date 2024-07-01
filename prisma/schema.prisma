@@ -8,6 +8,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator nestgraphql {
+  provider           = "node node_modules/prisma-nestjs-graphql"
+  output             = "../src/@generated"
+  noAtomicOperations = "true"
+  emitBlocks         = ["inputs", "models", "enums"]
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -20,9 +27,36 @@ enum UserRole {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int          @id @default(autoincrement())
+  email     String       @unique
   password  String
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+  role      UserRole     @default(USER)
+  profile   UserProfile?
+  socials   UserSocial[]
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp()
+
+  @@index([id, email])
+  @@map("users")
+}
+
+model UserProfile {
+  id        Int     @id @map("user_id")
+  user      User    @relation(fields: [id], references: [id], onDelete: Cascade)
+  firstName String  @map("first_name")
+  lastName  String? @map("last_name")
+  phone     String
+  avatar    String?
+
+  @@map("user_profiles")
+}
+
+model UserSocial {
+  id     Int    @id @default(autoincrement())
+  userId Int    @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name   String
+  link   String
+  order  Int    @default(1)
+
+  @@map("user_socials")
 }

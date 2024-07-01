@@ -2,11 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserResponse {
+type UserProfile {
+  id: Int!
+  firstName: String!
+  lastName: String
+  phone: String!
+  avatar: String
+  user: User!
+}
+
+type UserSocial {
+  id: Int!
+  userId: Int!
+  name: String!
+  link: String!
+  order: Int!
+  user: User!
+}
+
+type User {
   id: Int!
   email: String!
+  password: String!
   role: UserRole!
   createdAt: DateTime!
+  profile: UserProfile
+  socials: [UserSocial!]
 }
 
 """User roles"""
@@ -20,6 +41,15 @@ enum UserRole {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type UserResponse {
+  id: Int!
+  email: String!
+  role: UserRole!
+  createdAt: DateTime!
+  profile: UserProfile!
+  socials: UserSocial!
+}
 
 type Auth {
   """jwt access token"""
