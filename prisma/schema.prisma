@@ -27,13 +27,14 @@ enum UserRole {
 }
 
 model User {
-  id        Int          @id @default(autoincrement())
-  email     String       @unique
+  id        Int            @id @default(autoincrement())
+  email     String         @unique
   password  String
-  role      UserRole     @default(USER)
+  role      UserRole       @default(USER)
   profile   UserProfile?
   socials   UserSocial[]
-  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamp()
+  services  StaffService[]
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamp()
 
   @@index([id, email])
   @@map("users")
@@ -46,6 +47,7 @@ model UserProfile {
   lastName  String? @map("last_name")
   phone     String
   avatar    String?
+  bio       String?
 
   @@map("user_profiles")
 }
@@ -54,9 +56,47 @@ model UserSocial {
   id     Int    @id @default(autoincrement())
   userId Int    @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name   String
+  title  String
   link   String
   order  Int    @default(1)
 
+  @@index([userId])
   @@map("user_socials")
+}
+
+model CompanyService {
+  id            Int            @id @default(autoincrement())
+  title         String
+  description   String
+  image         String
+  order         Int            @default(1)
+  staffServices StaffService[]
+  tags          ServiceTag[]
+
+  @@map("company_services")
+}
+
+model StaffService {
+  id          Int            @id @default(autoincrement())
+  userId      Int            @map("user_id")
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serviceId   Int            @map("service_id")
+  service     CompanyService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  title       String?
+  description String?
+  price       Int?
+  order       Int            @default(1)
+  tags        ServiceTag[]
+
+  @@index([userId])
+  @@map("staff_services")
+}
+
+model ServiceTag {
+  id              Int              @id @default(autoincrement())
+  title           String
+  staffServices   StaffService[]
+  companyServices CompanyService[]
+
+  @@map("service_tags")
 }

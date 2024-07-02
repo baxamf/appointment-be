@@ -16,4 +16,7 @@ export class UserProfile {
 
   @Field(() => String, { nullable: true })
   avatar!: string | null;
+
+  @Field(() => String, { nullable: true })
+  bio!: string | null;
 }

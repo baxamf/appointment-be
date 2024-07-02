@@ -6,7 +6,7 @@ import { IsUrl } from 'class-validator';
 @InputType()
 export class CreateUserSocialInput {
   @Field(() => String, { nullable: false })
-  name!: string;
+  title!: string;
 
   @IsUrl()
   @Field(() => String, { nullable: false })

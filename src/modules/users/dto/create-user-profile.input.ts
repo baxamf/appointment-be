@@ -1,12 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsPhoneNumber, Length } from 'class-validator';
+import { IsPhoneNumber, IsString, Length } from 'class-validator';
 
 @InputType()
 export class CreateUserProfileInput {
+  @IsString()
   @Length(2)
   @Field(() => String, { nullable: false })
   firstName!: string;
 
+  @IsString()
   @Length(2)
   @Field(() => String, { nullable: true })
   lastName?: string;
@@ -17,4 +19,8 @@ export class CreateUserProfileInput {
 
   @Field(() => String, { nullable: true })
   avatar?: string;
+
+  @IsString()
+  @Field(() => String, { nullable: true })
+  bio?: string;
 }

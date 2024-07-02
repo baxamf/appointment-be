@@ -8,12 +8,13 @@ type UserProfile {
   lastName: String
   phone: String!
   avatar: String
+  bio: String
 }
 
 type UserSocial {
   id: Int!
   userId: Int!
-  name: String!
+  title: String!
   link: String!
   order: Int!
 }
@@ -96,6 +97,7 @@ input CreateUserProfileInput {
   lastName: String
   phone: String!
   avatar: String
+  bio: String
 }
 
 input UpdateUserProfileInput {
@@ -103,16 +105,17 @@ input UpdateUserProfileInput {
   lastName: String
   phone: String
   avatar: String
+  bio: String
 }
 
 input CreateUserSocialInput {
-  name: String!
+  title: String!
   link: String!
   order: Int
 }
 
 input UpdateUserSocialInput {
-  name: String
+  title: String
   link: String
   order: Int
   id: Int!
