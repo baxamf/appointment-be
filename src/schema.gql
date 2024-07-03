@@ -53,6 +53,34 @@ type MessageResponse {
   message: String!
 }
 
+type ServiceTag {
+  id: Int!
+  title: String!
+}
+
+type StaffService {
+  id: Int!
+  userId: Int!
+  serviceId: Int!
+  title: String
+  description: String
+  price: Int
+  order: Int!
+  user: UserResponse!
+  service: CompanyService!
+  tags: [ServiceTag!]
+}
+
+type CompanyService {
+  id: Int!
+  title: String!
+  description: String!
+  image: String!
+  order: Int!
+  staffServices: [StaffService!]
+  tags: [ServiceTag!]
+}
+
 type Query {
   """Refresh access token"""
   refresh: Auth!
@@ -65,6 +93,12 @@ type Query {
 
   """Get my user data"""
   getMe: UserResponse!
+  getCompanyServices: [CompanyService!]!
+  getCompanyService(companyServiceId: Int!): CompanyService!
+  getStaffServices: [StaffService!]!
+  getStaffService(staffServiceId: Int!): StaffService!
+  getServiceTags: [ServiceTag!]!
+  getServiceTag(serviceTagId: Int!): ServiceTag!
 }
 
 type Mutation {
@@ -76,6 +110,15 @@ type Mutation {
   createMySocial(createUserSocialInput: CreateUserSocialInput!): UserSocial!
   updateMySocial(updateUserSocialInput: UpdateUserSocialInput!): UserSocial!
   removeMySocial(socialId: Int!): UserSocial!
+  createCompanyService(createCompanyServiceInput: CreateCompanyServiceInput!): CompanyService!
+  updateCompanyService(updateCompanyServiceInput: UpdateCompanyServiceInput!): CompanyService!
+  removeCompanyService(companyServiceId: Int!): CompanyService!
+  createStaffService(createStaffServiceInput: CreateStaffServiceInput!): StaffService!
+  updateStaffService(updateServiceInput: UpdateStaffServiceInput!): StaffService!
+  removeStaffService(staffServiceId: Int!): StaffService!
+  createServiceTag(createServiceTagInput: CreateServiceTagInput!): ServiceTag!
+  updateServiceTag(updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
+  removeServiceTag(serviceTagId: Int!): ServiceTag!
 }
 
 input LoginInput {
@@ -118,5 +161,47 @@ input UpdateUserSocialInput {
   title: String
   link: String
   order: Int
+  id: Int!
+}
+
+input CreateCompanyServiceInput {
+  title: String!
+  description: String!
+  image: String!
+  order: Int
+}
+
+input UpdateCompanyServiceInput {
+  title: String
+  description: String
+  image: String
+  order: Int
+  id: Int!
+}
+
+input CreateStaffServiceInput {
+  id: Int
+  serviceId: Int!
+  title: String
+  description: String
+  price: Int
+  order: Int
+}
+
+input UpdateStaffServiceInput {
+  id: Int!
+  serviceId: Int
+  title: String
+  description: String
+  price: Int
+  order: Int
+}
+
+input CreateServiceTagInput {
+  title: String!
+}
+
+input UpdateServiceTagInput {
+  title: String
   id: Int!
 }

@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { StaffService } from './staff-service.entity';
-import { ServiceTag } from './service-tag.entity';
+import { StaffService } from '../../staff-services/entities/staff-service.entity';
+import { ServiceTag } from '../../service-tags/entities/service-tag.entity';
 
 @ObjectType()
 export class CompanyService {

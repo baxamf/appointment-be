@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CachingModule } from './modules/caching/caching.module';
 import { redisConfig } from './config/redis.config';
+import { ServicesModule } from './modules/services/services.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { redisConfig } from './config/redis.config';
     }),
     AuthModule,
     UsersModule,
+    ServicesModule,
   ],
 })
 export class AppModule {}

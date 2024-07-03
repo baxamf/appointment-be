@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
-import { CompanyServicesResolver } from './company-services.resolver';
+import { CompanyServiceProviders } from './company-services';
+import { StaffServiceProviders } from './staff-services';
+import { ServiceTagProviders } from './service-tags';
 
 @Module({
-  providers: [CompanyServicesResolver],
+  providers: [
+    ...CompanyServiceProviders,
+    ...StaffServiceProviders,
+    ...ServiceTagProviders,
+  ],
 })
 export class ServicesModule {}
