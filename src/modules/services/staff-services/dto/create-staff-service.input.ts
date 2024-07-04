@@ -17,6 +17,12 @@ export class CreateStaffServiceInput {
   @Field(() => Int, { nullable: true })
   price?: number;
 
+  @Field(() => Int, {
+    nullable: false,
+    description: 'Service duration in minutes',
+  })
+  duration!: number;
+
   @Field(() => Int, { nullable: true })
   order?: number;
 }

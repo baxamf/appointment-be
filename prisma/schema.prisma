@@ -27,14 +27,16 @@ enum UserRole {
 }
 
 model User {
-  id        Int            @id @default(autoincrement())
-  email     String         @unique
-  password  String
-  role      UserRole       @default(USER)
-  profile   UserProfile?
-  socials   UserSocial[]
-  services  StaffService[]
-  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamp()
+  id                   Int            @id @default(autoincrement())
+  email                String         @unique
+  password             String
+  role                 UserRole       @default(USER)
+  profile              UserProfile?
+  socials              UserSocial[]
+  services             StaffService[]
+  customerAppointments Appointment[]  @relation("customer_appointment")
+  staffAppointments    Appointment[]  @relation("staff_appointment")
+  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamp(0)
 
   @@index([id, email])
   @@map("users")
@@ -77,16 +79,18 @@ model CompanyService {
 }
 
 model StaffService {
-  id          Int            @id @default(autoincrement())
-  userId      Int            @map("user_id")
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  serviceId   Int            @map("service_id")
-  service     CompanyService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  title       String?
-  description String?
-  price       Int?
-  order       Int            @default(1)
-  tags        ServiceTag[]
+  id           Int            @id @default(autoincrement())
+  userId       Int            @map("user_id")
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serviceId    Int            @map("service_id")
+  service      CompanyService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  title        String?
+  description  String?
+  price        Int?
+  duration     Int
+  order        Int            @default(1)
+  tags         ServiceTag[]
+  appointments Appointment[]
 
   @@index([userId])
   @@map("staff_services")
@@ -99,4 +103,28 @@ model ServiceTag {
   companyServices CompanyService[]
 
   @@map("service_tags")
+}
+
+enum AppointmentStatus {
+  PENDING
+  FINISHED
+  CANCELLED
+}
+
+model Appointment {
+  id             Int               @id @default(autoincrement())
+  status         AppointmentStatus @default(PENDING)
+  staffServiceId Int               @map("service_id")
+  staffService   StaffService      @relation(fields: [staffServiceId], references: [id])
+  customerId     Int               @map("customer_id")
+  customer       User              @relation("customer_appointment", fields: [customerId], references: [id])
+  staffId        Int               @map("staff_id")
+  staff          User              @relation("staff_appointment", fields: [staffId], references: [id])
+  targetTime     DateTime          @map("target_time") @db.Timestamp(0)
+  description    String?
+  images         String[]
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamp(0)
+
+  @@index([staffId])
+  @@map("appointments")
 }

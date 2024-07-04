@@ -65,6 +65,7 @@ type StaffService {
   title: String
   description: String
   price: Int
+  duration: Int!
   order: Int!
   user: UserResponse!
   service: CompanyService!
@@ -79,6 +80,28 @@ type CompanyService {
   order: Int!
   staffServices: [StaffService!]
   tags: [ServiceTag!]
+}
+
+type Appointment {
+  id: Int!
+  status: AppointmentStatus!
+  staffServiceId: Int!
+  customerId: Int!
+  staffId: Int!
+  targetTime: DateTime!
+  description: String
+  images: [String!]
+  createdAt: DateTime!
+  staffService: StaffService!
+  customer: UserResponse!
+  staff: UserResponse!
+}
+
+"""Appointment statuses"""
+enum AppointmentStatus {
+  PENDING
+  FINISHED
+  CANCELLED
 }
 
 type Query {
@@ -99,6 +122,12 @@ type Query {
   getStaffService(staffServiceId: Int!): StaffService!
   getServiceTags: [ServiceTag!]!
   getServiceTag(serviceTagId: Int!): ServiceTag!
+
+  """Get my appointments"""
+  getMyAppointments: [Appointment!]!
+
+  """Get staff appointments"""
+  getStaffAppointments(staffUserId: Int!): [Appointment!]!
 }
 
 type Mutation {
@@ -119,6 +148,9 @@ type Mutation {
   createServiceTag(createServiceTagInput: CreateServiceTagInput!): ServiceTag!
   updateServiceTag(updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
   removeServiceTag(serviceTagId: Int!): ServiceTag!
+  createAppointment(createAppointmentInput: CreateAppointmentInput!): Appointment!
+  cancelAppointment(appointmentId: Int!): Appointment!
+  updateAppointment(updateAppointmentInput: UpdateAppointmentInput!): Appointment!
 }
 
 input LoginInput {
@@ -185,6 +217,9 @@ input CreateStaffServiceInput {
   title: String
   description: String
   price: Int
+
+  """Service duration in minutes"""
+  duration: Int!
   order: Int
 }
 
@@ -194,6 +229,9 @@ input UpdateStaffServiceInput {
   title: String
   description: String
   price: Int
+
+  """Service duration in minutes"""
+  duration: Int
   order: Int
 }
 
@@ -203,5 +241,24 @@ input CreateServiceTagInput {
 
 input UpdateServiceTagInput {
   title: String
+  id: Int!
+}
+
+input CreateAppointmentInput {
+  staffServiceId: Int!
+  customerId: Int!
+  staffId: Int!
+  targetTime: DateTime!
+  description: String
+  images: [String!]
+}
+
+input UpdateAppointmentInput {
+  staffServiceId: Int
+  customerId: Int
+  staffId: Int
+  targetTime: DateTime
+  description: String
+  images: [String!]
   id: Int!
 }

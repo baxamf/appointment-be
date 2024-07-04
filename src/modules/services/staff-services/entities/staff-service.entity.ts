@@ -23,6 +23,9 @@ export class StaffService {
   @Field(() => Int, { nullable: true })
   price!: number | null;
 
+  @Field(() => Int, { nullable: false })
+  duration!: number;
+
   @Field(() => Int, { nullable: false, defaultValue: 1 })
   order!: number;
 
