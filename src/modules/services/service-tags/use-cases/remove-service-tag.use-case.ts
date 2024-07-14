@@ -5,9 +5,9 @@ import { PrismaService } from 'src/modules/prisma/prisma.service';
 export class RemoveServiceTagUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(ServiceTagId: number) {
+  async execute(serviceTagId: number) {
     return this.prisma.serviceTag.delete({
-      where: { id: ServiceTagId },
+      where: { id: serviceTagId },
     });
   }
 }

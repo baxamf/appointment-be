@@ -6,9 +6,15 @@ import { CreateServiceTagInput } from '../dto/create-service-tag.input';
 export class CreateServiceTagUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(createServiceTagInput: CreateServiceTagInput) {
+  async execute(
+    companyServiceId: number,
+    createServiceTagInput: CreateServiceTagInput,
+  ) {
     return this.prisma.serviceTag.create({
-      data: createServiceTagInput,
+      data: {
+        ...createServiceTagInput,
+        companyServices: { connect: { id: companyServiceId } },
+      },
     });
   }
 }

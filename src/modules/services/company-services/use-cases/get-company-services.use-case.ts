@@ -6,6 +6,6 @@ export class GetCompanyServicesUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
   async execute() {
-    return this.prisma.companyService.findMany();
+    return this.prisma.companyService.findMany({ orderBy: { order: 'asc' } });
   }
 }

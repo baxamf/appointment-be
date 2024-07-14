@@ -6,12 +6,13 @@ import { UpdateServiceTagInput } from '../dto/update-service-tag.input';
 export class UpdateServiceTagUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(updateServiceTagInput: UpdateServiceTagInput) {
-    const { id, ...ServiceTagData } = updateServiceTagInput;
-
+  async execute(
+    serviceTagId: number,
+    updateServiceTagInput: UpdateServiceTagInput,
+  ) {
     return this.prisma.serviceTag.update({
-      where: { id },
-      data: ServiceTagData,
+      where: { id: serviceTagId },
+      data: updateServiceTagInput,
     });
   }
 }

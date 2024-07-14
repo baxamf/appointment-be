@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { CompanyService } from './entities/company-service.entity';
 import { CreateCompanyServiceInput } from './dto/create-company-service.input';
 import { UpdateCompanyServiceInput } from './dto/update-company-service.input';
@@ -10,6 +18,8 @@ import { GetCompanyServicesUseCase } from './use-cases/get-company-services.use-
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { Public } from 'src/modules/common/decorators/public.decorator';
+import { ServiceTag } from '../service-tags/entities/service-tag.entity';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => CompanyService)
@@ -20,6 +30,7 @@ export class CompanyServicesResolver {
     private readonly getCompanyServiceUseCase: GetCompanyServiceUseCase,
     private readonly getCompanyServicesUseCase: GetCompanyServicesUseCase,
     private readonly removeCompanyServiceUseCase: RemoveCompanyServiceUseCase,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => CompanyService)
@@ -32,10 +43,14 @@ export class CompanyServicesResolver {
 
   @Mutation(() => CompanyService)
   updateCompanyService(
+    @Args('companyServiceId', { type: () => Int }) companyServiceId: number,
     @Args('updateCompanyServiceInput')
     updateCompanyServiceInput: UpdateCompanyServiceInput,
   ) {
-    return this.updateCompanyServiceUseCase.execute(updateCompanyServiceInput);
+    return this.updateCompanyServiceUseCase.execute(
+      companyServiceId,
+      updateCompanyServiceInput,
+    );
   }
 
   @Public()
@@ -57,5 +72,12 @@ export class CompanyServicesResolver {
     @Args('companyServiceId', { type: () => Int }) companyServiceId: number,
   ) {
     return this.removeCompanyServiceUseCase.execute(companyServiceId);
+  }
+
+  @ResolveField('tags', () => [ServiceTag], { nullable: true })
+  getUserProfile(@Parent() service: CompanyService) {
+    return this.prisma.companyService
+      .findUnique({ where: { id: service.id } })
+      .tags();
   }
 }

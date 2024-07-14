@@ -6,12 +6,13 @@ import { UpdateCompanyServiceInput } from '../dto/update-company-service.input';
 export class UpdateCompanyServiceUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(updateCompanyServiceInput: UpdateCompanyServiceInput) {
-    const { id, ...companyServiceData } = updateCompanyServiceInput;
-
+  async execute(
+    companyServiceId: number,
+    updateCompanyServiceInput: UpdateCompanyServiceInput,
+  ) {
     return this.prisma.companyService.update({
-      where: { id },
-      data: companyServiceData,
+      where: { id: companyServiceId },
+      data: updateCompanyServiceInput,
     });
   }
 }

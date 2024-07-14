@@ -41,7 +41,11 @@ export class AuthService {
   }
 
   async generateTokens(user: User) {
-    const payload: JwtUserPayload = { userId: user.id, email: user.email };
+    const payload: JwtUserPayload = {
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+    };
     const tokenCacheKey = jwtRefreshTokenCacheKey(user.id);
     const refreshTokenTtl = this.appConfig.jwtRefreshCacheExpiresIn;
 

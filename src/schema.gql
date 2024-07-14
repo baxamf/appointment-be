@@ -121,7 +121,7 @@ type Query {
   getStaffServices: [StaffService!]!
   getStaffService(staffServiceId: Int!): StaffService!
   getServiceTags: [ServiceTag!]!
-  getServiceTag(serviceTagId: Int!): ServiceTag!
+  getCompanyServiceTags(companyServiceId: Int!): [ServiceTag!]!
 
   """Get my appointments"""
   getMyAppointments: [Appointment!]!
@@ -140,13 +140,13 @@ type Mutation {
   updateMySocial(updateUserSocialInput: UpdateUserSocialInput!): UserSocial!
   removeMySocial(socialId: Int!): UserSocial!
   createCompanyService(createCompanyServiceInput: CreateCompanyServiceInput!): CompanyService!
-  updateCompanyService(updateCompanyServiceInput: UpdateCompanyServiceInput!): CompanyService!
+  updateCompanyService(companyServiceId: Int!, updateCompanyServiceInput: UpdateCompanyServiceInput!): CompanyService!
   removeCompanyService(companyServiceId: Int!): CompanyService!
   createStaffService(createStaffServiceInput: CreateStaffServiceInput!): StaffService!
   updateStaffService(updateServiceInput: UpdateStaffServiceInput!): StaffService!
   removeStaffService(staffServiceId: Int!): StaffService!
-  createServiceTag(createServiceTagInput: CreateServiceTagInput!): ServiceTag!
-  updateServiceTag(updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
+  createServiceTag(companyServiceId: Int, createServiceTagInput: CreateServiceTagInput!): ServiceTag!
+  updateServiceTag(serviceTagId: Int!, updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
   removeServiceTag(serviceTagId: Int!): ServiceTag!
   createAppointment(createAppointmentInput: CreateAppointmentInput!): Appointment!
   cancelAppointment(appointmentId: Int!): Appointment!
@@ -208,7 +208,6 @@ input UpdateCompanyServiceInput {
   description: String
   image: String
   order: Int
-  id: Int!
 }
 
 input CreateStaffServiceInput {
@@ -241,7 +240,6 @@ input CreateServiceTagInput {
 
 input UpdateServiceTagInput {
   title: String
-  id: Int!
 }
 
 input CreateAppointmentInput {
