@@ -43,13 +43,15 @@ model User {
 }
 
 model UserProfile {
-  id        Int     @id @map("user_id")
-  user      User    @relation(fields: [id], references: [id], onDelete: Cascade)
-  firstName String  @map("first_name")
-  lastName  String? @map("last_name")
-  phone     String
-  avatar    String?
-  bio       String?
+  id             Int     @id @map("user_id")
+  user           User    @relation(fields: [id], references: [id], onDelete: Cascade)
+  firstName      String  @map("first_name")
+  lastName       String? @map("last_name")
+  nickName       String? @map("nick_name")
+  specialization String?
+  phone          String
+  avatar         String?
+  bio            String?
 
   @@map("user_profiles")
 }
@@ -86,6 +88,7 @@ model StaffService {
   service      CompanyService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   title        String?
   description  String?
+  image        String?
   price        Int?
   duration     Int
   order        Int            @default(1)

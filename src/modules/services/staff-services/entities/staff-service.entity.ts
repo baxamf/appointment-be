@@ -20,6 +20,9 @@ export class StaffService {
   @Field(() => String, { nullable: true })
   description!: string | null;
 
+  @Field(() => String, { nullable: true })
+  image!: string | null;
+
   @Field(() => Int, { nullable: true })
   price!: number | null;
 

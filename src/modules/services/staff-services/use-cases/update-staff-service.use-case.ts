@@ -6,12 +6,10 @@ import { UpdateStaffServiceInput } from '../dto/update-staff-service.input';
 export class UpdateStaffServiceUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute(updateStaffServiceInput: UpdateStaffServiceInput) {
-    const { id, ...staffServiceData } = updateStaffServiceInput;
-
+  async execute(id: number, updateStaffServiceInput: UpdateStaffServiceInput) {
     return this.prisma.staffService.update({
       where: { id },
-      data: staffServiceData,
+      data: updateStaffServiceInput,
     });
   }
 }

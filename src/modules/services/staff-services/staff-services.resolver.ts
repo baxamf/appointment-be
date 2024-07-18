@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CreateStaffServiceInput } from './dto/create-staff-service.input';
 import { UpdateStaffServiceInput } from './dto/update-staff-service.input';
 import { CreateStaffServiceUseCase } from './use-cases/create-staff-service.use-case';
@@ -10,6 +18,9 @@ import { StaffService } from './entities/staff-service.entity';
 import { CurrentUser } from 'src/modules/common/decorators/get-current-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { GetStaffServicesByUserIdUseCase } from './use-cases/get-staff-services-by-user-id.use-case';
+import { CompanyService } from '../company-services/entities/company-service.entity';
+import { PrismaService } from 'src/modules/prisma/prisma.service';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => StaffService)
@@ -19,7 +30,9 @@ export class StaffServicesResolver {
     private readonly updateStaffServiceUseCase: UpdateStaffServiceUseCase,
     private readonly getStaffServiceUseCase: GetStaffServiceUseCase,
     private readonly getStaffServicesUseCase: GetStaffServicesUseCase,
+    private readonly getStaffServicesByUserIdUseCase: GetStaffServicesByUserIdUseCase,
     private readonly removeStaffServiceUseCase: RemoveStaffServiceUseCase,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => StaffService)
@@ -33,14 +46,24 @@ export class StaffServicesResolver {
 
   @Mutation(() => StaffService)
   updateStaffService(
-    @Args('updateServiceInput') updateServiceInput: UpdateStaffServiceInput,
+    @Args('staffServiceId', { type: () => Int }) staffServiceId: number,
+    @Args('updateStaffServiceInput')
+    updateServiceInput: UpdateStaffServiceInput,
   ) {
-    return this.updateStaffServiceUseCase.execute(updateServiceInput);
+    return this.updateStaffServiceUseCase.execute(
+      staffServiceId,
+      updateServiceInput,
+    );
   }
 
   @Query(() => [StaffService])
   getStaffServices() {
     return this.getStaffServicesUseCase.execute();
+  }
+
+  @Query(() => [StaffService])
+  getMyStaffServices(@CurrentUser('id') id: number) {
+    return this.getStaffServicesByUserIdUseCase.execute(id);
   }
 
   @Query(() => StaffService)
@@ -55,5 +78,12 @@ export class StaffServicesResolver {
     @Args('staffServiceId', { type: () => Int }) staffServiceId: number,
   ) {
     return this.removeStaffServiceUseCase.execute(staffServiceId);
+  }
+
+  @ResolveField('service', () => CompanyService)
+  getStaffServiceCompanyService(@Parent() { id }: StaffService) {
+    return this.prisma.staffService
+      .findUniqueOrThrow({ where: { id } })
+      .service();
   }
 }

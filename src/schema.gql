@@ -6,6 +6,8 @@ type UserProfile {
   id: Int!
   firstName: String!
   lastName: String
+  nickName: String
+  specialization: String
   phone: String!
   avatar: String
   bio: String
@@ -64,6 +66,7 @@ type StaffService {
   serviceId: Int!
   title: String
   description: String
+  image: String
   price: Int
   duration: Int!
   order: Int!
@@ -111,6 +114,9 @@ type Query {
   """Logout user"""
   logout: MessageResponse!
 
+  """Get staff"""
+  getStaff: [UserResponse!]!
+
   """Get user by id"""
   getUser(userId: Int!): UserResponse!
 
@@ -119,6 +125,7 @@ type Query {
   getCompanyServices: [CompanyService!]!
   getCompanyService(companyServiceId: Int!): CompanyService!
   getStaffServices: [StaffService!]!
+  getMyStaffServices: [StaffService!]!
   getStaffService(staffServiceId: Int!): StaffService!
   getServiceTags: [ServiceTag!]!
   getCompanyServiceTags(companyServiceId: Int!): [ServiceTag!]!
@@ -133,7 +140,7 @@ type Query {
 type Mutation {
   """Login user"""
   login(loginInput: LoginInput!): Auth!
-  createUser(createUserInput: CreateUserInput!): UserResponse!
+  createUser(createUserInput: CreateUserInput!, createUserProfileInput: CreateUserProfileInput!): UserResponse!
   createMyProfile(createUserProfileInput: CreateUserProfileInput!): UserProfile!
   updateMyProfile(updateUserProfileInput: UpdateUserProfileInput!): UserProfile!
   createMySocial(createUserSocialInput: CreateUserSocialInput!): UserSocial!
@@ -143,7 +150,7 @@ type Mutation {
   updateCompanyService(companyServiceId: Int!, updateCompanyServiceInput: UpdateCompanyServiceInput!): CompanyService!
   removeCompanyService(companyServiceId: Int!): CompanyService!
   createStaffService(createStaffServiceInput: CreateStaffServiceInput!): StaffService!
-  updateStaffService(updateServiceInput: UpdateStaffServiceInput!): StaffService!
+  updateStaffService(staffServiceId: Int!, updateStaffServiceInput: UpdateStaffServiceInput!): StaffService!
   removeStaffService(staffServiceId: Int!): StaffService!
   createServiceTag(companyServiceId: Int, createServiceTagInput: CreateServiceTagInput!): ServiceTag!
   updateServiceTag(serviceTagId: Int!, updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
@@ -170,6 +177,8 @@ input CreateUserInput {
 input CreateUserProfileInput {
   firstName: String!
   lastName: String
+  nickName: String
+  specialization: String
   phone: String!
   avatar: String
   bio: String
@@ -178,6 +187,8 @@ input CreateUserProfileInput {
 input UpdateUserProfileInput {
   firstName: String
   lastName: String
+  nickName: String
+  specialization: String
   phone: String
   avatar: String
   bio: String
@@ -215,6 +226,9 @@ input CreateStaffServiceInput {
   serviceId: Int!
   title: String
   description: String
+  image: String
+
+  """Service price per duration"""
   price: Int
 
   """Service duration in minutes"""
@@ -223,10 +237,13 @@ input CreateStaffServiceInput {
 }
 
 input UpdateStaffServiceInput {
-  id: Int!
+  id: Int
   serviceId: Int
   title: String
   description: String
+  image: String
+
+  """Service price per duration"""
   price: Int
 
   """Service duration in minutes"""

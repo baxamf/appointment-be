@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -21,6 +22,7 @@ export class CreateUserInput {
   @Field(() => String, { nullable: false })
   password!: string;
 
+  @IsOptional()
   @IsEnum(UserRole)
   @Field(() => UserRole, { nullable: true })
   role?: keyof typeof UserRole;

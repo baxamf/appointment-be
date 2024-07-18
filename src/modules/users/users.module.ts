@@ -7,12 +7,14 @@ import { CreateUserSocialUseCase } from './use-cases/create-user-social.use-case
 import { RemoveUserSocialUseCase } from './use-cases/remove-user-social.use-case';
 import { UpdateUserSocialUseCase } from './use-cases/update-user-social.use-case';
 import { UpdateUserProfileUseCase } from './use-cases/update-user-profile.use-case';
+import { GetStaffUseCase } from './use-cases/get-staff.use-case';
 
 @Module({
   providers: [
     UsersResolver,
     CreateUserUseCase,
     GetUserUseCase,
+    GetStaffUseCase,
     CreateUserProfileUseCase,
     UpdateUserProfileUseCase,
     CreateUserSocialUseCase,

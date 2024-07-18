@@ -26,12 +26,14 @@ import { RemoveUserSocialUseCase } from './use-cases/remove-user-social.use-case
 import { UpdateUserSocialUseCase } from './use-cases/update-user-social.use-case';
 import { UpdateUserProfileInput } from './dto/update-user-profile.input';
 import { UpdateUserProfileUseCase } from './use-cases/update-user-profile.use-case';
+import { GetStaffUseCase } from './use-cases/get-staff.use-case';
 
 @Resolver(() => UserResponse)
 export class UsersResolver {
   constructor(
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
+    private readonly getStaffUseCase: GetStaffUseCase,
     private readonly createUserProfileUseCase: CreateUserProfileUseCase,
     private readonly updateUserProfileUseCase: UpdateUserProfileUseCase,
     private readonly createUserSocialUseCase: CreateUserSocialUseCase,
@@ -41,8 +43,22 @@ export class UsersResolver {
   ) {}
 
   @Mutation(() => UserResponse)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.createUserUseCase.execute(createUserInput);
+  createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+    @Args('createUserProfileInput')
+    createUserProfileInput: CreateUserProfileInput,
+  ) {
+    console.log(createUserInput);
+    return this.createUserUseCase.execute(
+      createUserInput,
+      createUserProfileInput,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [UserResponse], { description: 'Get staff' })
+  async getStaff() {
+    return this.getStaffUseCase.execute();
   }
 
   @UseGuards(JwtAuthGuard)

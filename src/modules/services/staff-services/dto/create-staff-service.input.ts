@@ -14,7 +14,13 @@ export class CreateStaffServiceInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => String, { nullable: true })
+  image?: string;
+
+  @Field(() => Int, {
+    nullable: true,
+    description: 'Service price per duration',
+  })
   price?: number;
 
   @Field(() => Int, {

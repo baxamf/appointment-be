@@ -11,6 +11,12 @@ export class UserProfile {
   @Field(() => String, { nullable: true })
   lastName!: string | null;
 
+  @Field(() => String, { nullable: true })
+  nickName!: string | null;
+
+  @Field(() => String, { nullable: true })
+  specialization!: string | null;
+
   @Field(() => String, { nullable: false })
   phone!: string;
 
