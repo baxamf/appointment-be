@@ -115,7 +115,7 @@ type Query {
   logout: MessageResponse!
 
   """Get staff"""
-  getStaff: [UserResponse!]!
+  getStaff(getStaffInput: GetStaffInput): [UserResponse!]!
 
   """Get user by id"""
   getUser(userId: Int!): UserResponse!
@@ -124,7 +124,7 @@ type Query {
   getMe: UserResponse!
   getCompanyServices: [CompanyService!]!
   getCompanyService(companyServiceId: Int!): CompanyService!
-  getStaffServices: [StaffService!]!
+  getStaffServices(getStaffServicesInput: GetStaffServicesInput): [StaffService!]!
   getMyStaffServices: [StaffService!]!
   getStaffService(staffServiceId: Int!): StaffService!
   getServiceTags: [ServiceTag!]!
@@ -135,6 +135,14 @@ type Query {
 
   """Get staff appointments"""
   getStaffAppointments(staffUserId: Int!): [Appointment!]!
+}
+
+input GetStaffInput {
+  serviceId: Int
+}
+
+input GetStaffServicesInput {
+  serviceId: Int
 }
 
 type Mutation {
@@ -155,7 +163,7 @@ type Mutation {
   createServiceTag(companyServiceId: Int, createServiceTagInput: CreateServiceTagInput!): ServiceTag!
   updateServiceTag(serviceTagId: Int!, updateServiceTagInput: UpdateServiceTagInput!): ServiceTag!
   removeServiceTag(serviceTagId: Int!): ServiceTag!
-  createAppointment(createAppointmentInput: CreateAppointmentInput!): Appointment!
+  createAppointment(createAppointmentInput: CreateAppointmentInput!, customerDataInput: CustomerDataInput!): Appointment!
   cancelAppointment(appointmentId: Int!): Appointment!
   updateAppointment(updateAppointmentInput: UpdateAppointmentInput!): Appointment!
 }
@@ -261,16 +269,20 @@ input UpdateServiceTagInput {
 
 input CreateAppointmentInput {
   staffServiceId: Int!
-  customerId: Int!
   staffId: Int!
   targetTime: DateTime!
   description: String
   images: [String!]
 }
 
+input CustomerDataInput {
+  email: String!
+  firstName: String!
+  phone: String!
+}
+
 input UpdateAppointmentInput {
   staffServiceId: Int
-  customerId: Int
   staffId: Int
   targetTime: DateTime
   description: String

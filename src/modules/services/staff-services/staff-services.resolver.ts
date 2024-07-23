@@ -21,6 +21,8 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { GetStaffServicesByUserIdUseCase } from './use-cases/get-staff-services-by-user-id.use-case';
 import { CompanyService } from '../company-services/entities/company-service.entity';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { UserResponse } from 'src/modules/users/entities/user-response.entity';
+import { GetStaffServicesInput } from './dto/get-staff-services-input';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => StaffService)
@@ -57,8 +59,11 @@ export class StaffServicesResolver {
   }
 
   @Query(() => [StaffService])
-  getStaffServices() {
-    return this.getStaffServicesUseCase.execute();
+  getStaffServices(
+    @Args('getStaffServicesInput', { nullable: true })
+    getStaffServicesInput: GetStaffServicesInput,
+  ) {
+    return this.getStaffServicesUseCase.execute(getStaffServicesInput);
   }
 
   @Query(() => [StaffService])
@@ -78,6 +83,11 @@ export class StaffServicesResolver {
     @Args('staffServiceId', { type: () => Int }) staffServiceId: number,
   ) {
     return this.removeStaffServiceUseCase.execute(staffServiceId);
+  }
+
+  @ResolveField('user', () => UserResponse)
+  getStaffServiceUser(@Parent() { id }: StaffService) {
+    return this.prisma.staffService.findUniqueOrThrow({ where: { id } }).user();
   }
 
   @ResolveField('service', () => CompanyService)

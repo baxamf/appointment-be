@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { GetStaffServicesInput } from '../dto/get-staff-services-input';
 
 @Injectable()
 export class GetStaffServicesUseCase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async execute() {
-    return this.prisma.staffService.findMany();
+  async execute(getStaffServicesInput: GetStaffServicesInput) {
+    return this.prisma.staffService.findMany({
+      where: {
+        serviceId: getStaffServicesInput.serviceId,
+      },
+    });
   }
 }

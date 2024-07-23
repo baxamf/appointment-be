@@ -6,9 +6,6 @@ export class CreateAppointmentInput {
   staffServiceId!: number;
 
   @Field(() => Int, { nullable: false })
-  customerId!: number;
-
-  @Field(() => Int, { nullable: false })
   staffId!: number;
 
   @Field(() => Date, { nullable: false })

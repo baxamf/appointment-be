@@ -9,6 +9,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CancelAppointmentUseCase } from './use-cases/cancel-appointment.use-case';
 import { UpdateAppointmentUseCase } from './use-cases/update-appointment.use-case';
+import { CustomerDataInput } from './dto/customer-data.input';
 
 @Resolver(() => Appointment)
 export class AppointmentsResolver {
@@ -23,8 +24,13 @@ export class AppointmentsResolver {
   createAppointment(
     @Args('createAppointmentInput')
     createAppointmentInput: CreateAppointmentInput,
+    @Args('customerDataInput')
+    customerDataInput: CustomerDataInput,
   ) {
-    return this.createAppointmentUseCase.execute(createAppointmentInput);
+    return this.createAppointmentUseCase.execute(
+      createAppointmentInput,
+      customerDataInput,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

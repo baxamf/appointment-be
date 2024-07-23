@@ -27,6 +27,7 @@ import { UpdateUserSocialUseCase } from './use-cases/update-user-social.use-case
 import { UpdateUserProfileInput } from './dto/update-user-profile.input';
 import { UpdateUserProfileUseCase } from './use-cases/update-user-profile.use-case';
 import { GetStaffUseCase } from './use-cases/get-staff.use-case';
+import { GetStaffInput } from './dto/get-staff.input';
 
 @Resolver(() => UserResponse)
 export class UsersResolver {
@@ -55,10 +56,12 @@ export class UsersResolver {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Query(() => [UserResponse], { description: 'Get staff' })
-  async getStaff() {
-    return this.getStaffUseCase.execute();
+  async getStaff(
+    @Args('getStaffInput', { nullable: true }) getStaffInput: GetStaffInput,
+  ) {
+    return this.getStaffUseCase.execute(getStaffInput);
   }
 
   @UseGuards(JwtAuthGuard)
