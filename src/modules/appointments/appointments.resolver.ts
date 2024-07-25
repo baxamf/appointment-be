@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { Appointment } from './entities/appointment.entity';
 import { CreateAppointmentInput } from './dto/create-appointment.input';
 import { UpdateAppointmentInput } from './dto/update-appointment.input';
@@ -10,6 +18,10 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CancelAppointmentUseCase } from './use-cases/cancel-appointment.use-case';
 import { UpdateAppointmentUseCase } from './use-cases/update-appointment.use-case';
 import { CustomerDataInput } from './dto/customer-data.input';
+import { PrismaService } from '../prisma/prisma.service';
+import { StaffService } from '../services/staff-services/entities/staff-service.entity';
+import { UserResponse } from '../users/entities/user-response.entity';
+import { GetAppointmentFilterInput } from './dto/get-appointment-filter.input';
 
 @Resolver(() => Appointment)
 export class AppointmentsResolver {
@@ -18,6 +30,7 @@ export class AppointmentsResolver {
     private readonly getStaffAppointmentsUseCase: GetStaffAppointmentsUseCase,
     private readonly cancelAppointmentUseCase: CancelAppointmentUseCase,
     private readonly updateAppointmentUseCase: UpdateAppointmentUseCase,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => Appointment)
@@ -35,15 +48,27 @@ export class AppointmentsResolver {
 
   @UseGuards(JwtAuthGuard)
   @Query(() => [Appointment], { description: 'Get my appointments' })
-  getMyAppointments(@CurrentUser('id') id: number) {
-    return this.getStaffAppointmentsUseCase.execute(id);
+  getMyAppointments(
+    @CurrentUser('id') id: number,
+    @Args('getAppointmentFilterInput', { nullable: true })
+    getAppointmentFilterInput: GetAppointmentFilterInput,
+  ) {
+    return this.getStaffAppointmentsUseCase.execute(
+      id,
+      getAppointmentFilterInput,
+    );
   }
 
   @Query(() => [Appointment], { description: 'Get staff appointments' })
   getStaffAppointments(
     @Args('staffUserId', { type: () => Int }) staffUserId: number,
+    @Args('getAppointmentFilterInput', { nullable: true })
+    getAppointmentFilterInput: GetAppointmentFilterInput,
   ) {
-    return this.getStaffAppointmentsUseCase.execute(staffUserId);
+    return this.getStaffAppointmentsUseCase.execute(
+      staffUserId,
+      getAppointmentFilterInput,
+    );
   }
 
   @Mutation(() => Appointment)
@@ -59,5 +84,24 @@ export class AppointmentsResolver {
     updateAppointmentInput: UpdateAppointmentInput,
   ) {
     return this.updateAppointmentUseCase.execute(updateAppointmentInput);
+  }
+
+  @ResolveField('staffService', () => StaffService)
+  getAppointmentStaffService(@Parent() { id }: Appointment) {
+    return this.prisma.appointment
+      .findUniqueOrThrow({ where: { id } })
+      .staffService();
+  }
+
+  @ResolveField('customer', () => UserResponse)
+  getAppointmentCustomer(@Parent() { id }: Appointment) {
+    return this.prisma.appointment
+      .findUniqueOrThrow({ where: { id } })
+      .customer();
+  }
+
+  @ResolveField('staff', () => UserResponse)
+  getAppointmentStaff(@Parent() { id }: Appointment) {
+    return this.prisma.appointment.findUniqueOrThrow({ where: { id } }).staff();
   }
 }

@@ -131,10 +131,10 @@ type Query {
   getCompanyServiceTags(companyServiceId: Int!): [ServiceTag!]!
 
   """Get my appointments"""
-  getMyAppointments: [Appointment!]!
+  getMyAppointments(getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
 
   """Get staff appointments"""
-  getStaffAppointments(staffUserId: Int!): [Appointment!]!
+  getStaffAppointments(staffUserId: Int!, getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
 }
 
 input GetStaffInput {
@@ -143,6 +143,12 @@ input GetStaffInput {
 
 input GetStaffServicesInput {
   serviceId: Int
+}
+
+input GetAppointmentFilterInput {
+  staffServiceId: Int
+  staffId: Int
+  targetTime: DateTime
 }
 
 type Mutation {
