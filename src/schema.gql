@@ -133,8 +133,8 @@ type Query {
   """Get my appointments"""
   getMyAppointments(getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
 
-  """Get staff appointments"""
-  getStaffAppointments(staffUserId: Int!, getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
+  """Get all appointments by filter params"""
+  getAllAppointments(getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
 }
 
 input GetStaffInput {
@@ -146,9 +146,10 @@ input GetStaffServicesInput {
 }
 
 input GetAppointmentFilterInput {
+  companyServiceId: Int
   staffServiceId: Int
   staffId: Int
-  targetTime: DateTime
+  targetTime: DateTime = "2024-07-29T12:06:13.162Z"
 }
 
 type Mutation {

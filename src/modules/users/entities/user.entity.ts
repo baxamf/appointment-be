@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, HideField } from '@nestjs/graphql';
 import { UserRole } from '../enums/user-role.enum';
 import { UserProfile } from './user-profile.entity';
 import { UserSocial } from './user-social.entity';
@@ -10,7 +10,7 @@ export class User {
   @Field(() => String, { nullable: false })
   email!: string;
 
-  @Field(() => String, { nullable: false })
+  @HideField()
   password!: string;
 
   @Field(() => UserRole, { nullable: false, defaultValue: 'USER' })

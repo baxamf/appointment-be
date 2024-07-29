@@ -22,12 +22,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StaffService } from '../services/staff-services/entities/staff-service.entity';
 import { UserResponse } from '../users/entities/user-response.entity';
 import { GetAppointmentFilterInput } from './dto/get-appointment-filter.input';
+import { GetAllAppointmentsUseCase } from './use-cases/get-all-appointments.use-case';
 
 @Resolver(() => Appointment)
 export class AppointmentsResolver {
   constructor(
     private readonly createAppointmentUseCase: CreateAppointmentUseCase,
     private readonly getStaffAppointmentsUseCase: GetStaffAppointmentsUseCase,
+    private readonly getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
     private readonly cancelAppointmentUseCase: CancelAppointmentUseCase,
     private readonly updateAppointmentUseCase: UpdateAppointmentUseCase,
     private readonly prisma: PrismaService,
@@ -59,16 +61,15 @@ export class AppointmentsResolver {
     );
   }
 
-  @Query(() => [Appointment], { description: 'Get staff appointments' })
-  getStaffAppointments(
-    @Args('staffUserId', { type: () => Int }) staffUserId: number,
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [Appointment], {
+    description: 'Get all appointments by filter params',
+  })
+  getAllAppointments(
     @Args('getAppointmentFilterInput', { nullable: true })
     getAppointmentFilterInput: GetAppointmentFilterInput,
   ) {
-    return this.getStaffAppointmentsUseCase.execute(
-      staffUserId,
-      getAppointmentFilterInput,
-    );
+    return this.getAllAppointmentsUseCase.execute(getAppointmentFilterInput);
   }
 
   @Mutation(() => Appointment)

@@ -23,6 +23,7 @@ import { CompanyService } from '../company-services/entities/company-service.ent
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { UserResponse } from 'src/modules/users/entities/user-response.entity';
 import { GetStaffServicesInput } from './dto/get-staff-services-input';
+import { Public } from 'src/modules/common/decorators/public.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => StaffService)
@@ -58,6 +59,7 @@ export class StaffServicesResolver {
     );
   }
 
+  @Public()
   @Query(() => [StaffService])
   getStaffServices(
     @Args('getStaffServicesInput', { nullable: true })
