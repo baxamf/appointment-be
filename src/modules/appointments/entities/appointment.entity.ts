@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { AppointmentStatus } from '../enums/appointment-status.enum';
 import { StaffService } from 'src/modules/services/staff-services/entities/staff-service.entity';
-import { UserResponse } from 'src/modules/users/entities/user-response.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @ObjectType()
 export class Appointment {
@@ -35,9 +35,9 @@ export class Appointment {
   @Field(() => StaffService, { nullable: false })
   staffService?: StaffService;
 
-  @Field(() => UserResponse, { nullable: false })
-  customer?: UserResponse;
+  @Field(() => User, { nullable: false })
+  customer?: User;
 
-  @Field(() => UserResponse, { nullable: false })
-  staff?: UserResponse;
+  @Field(() => User, { nullable: false })
+  staff?: User;
 }

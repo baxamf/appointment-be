@@ -20,9 +20,9 @@ import { UpdateAppointmentUseCase } from './use-cases/update-appointment.use-cas
 import { CustomerDataInput } from './dto/customer-data.input';
 import { PrismaService } from '../prisma/prisma.service';
 import { StaffService } from '../services/staff-services/entities/staff-service.entity';
-import { UserResponse } from '../users/entities/user-response.entity';
 import { GetAppointmentFilterInput } from './dto/get-appointment-filter.input';
 import { GetAllAppointmentsUseCase } from './use-cases/get-all-appointments.use-case';
+import { User } from '../users/entities/user.entity';
 
 @Resolver(() => Appointment)
 export class AppointmentsResolver {
@@ -94,14 +94,14 @@ export class AppointmentsResolver {
       .staffService();
   }
 
-  @ResolveField('customer', () => UserResponse)
+  @ResolveField('customer', () => User)
   getAppointmentCustomer(@Parent() { id }: Appointment) {
     return this.prisma.appointment
       .findUniqueOrThrow({ where: { id } })
       .customer();
   }
 
-  @ResolveField('staff', () => UserResponse)
+  @ResolveField('staff', () => User)
   getAppointmentStaff(@Parent() { id }: Appointment) {
     return this.prisma.appointment.findUniqueOrThrow({ where: { id } }).staff();
   }

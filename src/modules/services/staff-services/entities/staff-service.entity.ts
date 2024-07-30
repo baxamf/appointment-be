@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { UserResponse } from 'src/modules/users/entities/user-response.entity';
 import { CompanyService } from '../../company-services/entities/company-service.entity';
 import { ServiceTag } from '../../service-tags/entities/service-tag.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @ObjectType()
 export class StaffService {
@@ -32,8 +32,8 @@ export class StaffService {
   @Field(() => Int, { nullable: false, defaultValue: 1 })
   order!: number;
 
-  @Field(() => UserResponse, { nullable: false })
-  user?: UserResponse;
+  @Field(() => User, { nullable: false })
+  user?: User;
 
   @Field(() => CompanyService, { nullable: false })
   service?: CompanyService;

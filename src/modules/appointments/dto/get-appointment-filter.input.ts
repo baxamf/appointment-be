@@ -11,6 +11,6 @@ export class GetAppointmentFilterInput {
   @Field(() => Int, { nullable: true })
   staffId?: number;
 
-  @Field(() => Date, { nullable: true, defaultValue: new Date() })
+  @Field(() => Date, { nullable: true })
   targetTime?: Date | string;
 }

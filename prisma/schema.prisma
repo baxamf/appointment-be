@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -27,16 +21,17 @@ enum UserRole {
 }
 
 model User {
-  id                   Int            @id @default(autoincrement())
-  email                String         @unique
+  id                   Int              @id @default(autoincrement())
+  email                String           @unique
   password             String
-  role                 UserRole       @default(USER)
+  role                 UserRole         @default(USER)
   profile              UserProfile?
+  workingDays          UserWorkingDay[]
   socials              UserSocial[]
   services             StaffService[]
-  customerAppointments Appointment[]  @relation("customer_appointment")
-  staffAppointments    Appointment[]  @relation("staff_appointment")
-  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamp(0)
+  customerAppointments Appointment[]    @relation("customer_appointment")
+  staffAppointments    Appointment[]    @relation("staff_appointment")
+  createdAt            DateTime         @default(now()) @map("created_at") @db.Timestamp(0)
 
   @@index([id, email])
   @@map("users")
@@ -54,6 +49,20 @@ model UserProfile {
   bio            String?
 
   @@map("user_profiles")
+}
+
+model UserWorkingDay {
+  id          Int  @id @default(autoincrement())
+  day         Int
+  startHour   Int  @map("start_hour")
+  startMinute Int  @map("start_minute")
+  endHour     Int  @map("end_hour")
+  endMinute   Int  @map("end_minute")
+  userId      Int  @map("user_id")
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_working_day")
 }
 
 model UserSocial {

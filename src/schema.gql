@@ -21,12 +21,23 @@ type UserSocial {
   order: Int!
 }
 
-type UserResponse {
+type UserWorkingDay {
+  id: Int!
+  day: Int!
+  startHour: Int!
+  startMinute: Int!
+  endHour: Int!
+  endMinute: Int!
+  userId: Int!
+}
+
+type User {
   id: Int!
   email: String!
   role: UserRole!
   createdAt: DateTime!
   profile: UserProfile
+  workingDays: UserWorkingDay
   socials: [UserSocial!]
 }
 
@@ -47,7 +58,7 @@ type Auth {
   accessToken: String!
 
   """user"""
-  user: UserResponse!
+  user: User!
 }
 
 type MessageResponse {
@@ -70,7 +81,7 @@ type StaffService {
   price: Int
   duration: Int!
   order: Int!
-  user: UserResponse!
+  user: User!
   service: CompanyService!
   tags: [ServiceTag!]
 }
@@ -96,8 +107,8 @@ type Appointment {
   images: [String!]
   createdAt: DateTime!
   staffService: StaffService!
-  customer: UserResponse!
-  staff: UserResponse!
+  customer: User!
+  staff: User!
 }
 
 """Appointment statuses"""
@@ -115,13 +126,16 @@ type Query {
   logout: MessageResponse!
 
   """Get staff"""
-  getStaff(getStaffInput: GetStaffInput): [UserResponse!]!
+  getStaff(getStaffInput: GetStaffInput): [User!]!
 
   """Get user by id"""
-  getUser(userId: Int!): UserResponse!
+  getUser(userId: Int!): User!
 
   """Get my user data"""
-  getMe: UserResponse!
+  getMe: User!
+
+  """Get staff working days"""
+  getUserWorkingDays(userId: Float): [UserWorkingDay!]!
   getCompanyServices: [CompanyService!]!
   getCompanyService(companyServiceId: Int!): CompanyService!
   getStaffServices(getStaffServicesInput: GetStaffServicesInput): [StaffService!]!
@@ -149,18 +163,20 @@ input GetAppointmentFilterInput {
   companyServiceId: Int
   staffServiceId: Int
   staffId: Int
-  targetTime: DateTime = "2024-07-29T12:06:13.162Z"
+  targetTime: DateTime
 }
 
 type Mutation {
   """Login user"""
   login(loginInput: LoginInput!): Auth!
-  createUser(createUserInput: CreateUserInput!, createUserProfileInput: CreateUserProfileInput!): UserResponse!
-  createMyProfile(createUserProfileInput: CreateUserProfileInput!): UserProfile!
+  createUser(createUserInput: CreateUserInput!, createUserProfileInput: CreateUserProfileInput!): User!
   updateMyProfile(updateUserProfileInput: UpdateUserProfileInput!): UserProfile!
   createMySocial(createUserSocialInput: CreateUserSocialInput!): UserSocial!
   updateMySocial(updateUserSocialInput: UpdateUserSocialInput!): UserSocial!
   removeMySocial(socialId: Int!): UserSocial!
+  createUserWorkingDay(createUserWorkingDayInput: CreateUserWorkingDayInput!): UserWorkingDay!
+  updateUserWorkingDay(userWorkingDayId: Int!, updateUserWorkingDayInput: UpdateUserWorkingDayInput!): UserWorkingDay!
+  removeUserWorkingDay(userWorkingDayId: Int!): UserWorkingDay!
   createCompanyService(createCompanyServiceInput: CreateCompanyServiceInput!): CompanyService!
   updateCompanyService(companyServiceId: Int!, updateCompanyServiceInput: UpdateCompanyServiceInput!): CompanyService!
   removeCompanyService(companyServiceId: Int!): CompanyService!
@@ -220,6 +236,23 @@ input UpdateUserSocialInput {
   link: String
   order: Int
   id: Int!
+}
+
+input CreateUserWorkingDayInput {
+  day: Int!
+  startHour: Int!
+  startMinute: Int!
+  endHour: Int!
+  endMinute: Int!
+  userId: Int!
+}
+
+input UpdateUserWorkingDayInput {
+  day: Int!
+  startHour: Int!
+  startMinute: Int!
+  endHour: Int!
+  endMinute: Int!
 }
 
 input CreateCompanyServiceInput {

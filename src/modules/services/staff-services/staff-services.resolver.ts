@@ -21,9 +21,9 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { GetStaffServicesByUserIdUseCase } from './use-cases/get-staff-services-by-user-id.use-case';
 import { CompanyService } from '../company-services/entities/company-service.entity';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { UserResponse } from 'src/modules/users/entities/user-response.entity';
 import { GetStaffServicesInput } from './dto/get-staff-services-input';
 import { Public } from 'src/modules/common/decorators/public.decorator';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => StaffService)
@@ -87,7 +87,7 @@ export class StaffServicesResolver {
     return this.removeStaffServiceUseCase.execute(staffServiceId);
   }
 
-  @ResolveField('user', () => UserResponse)
+  @ResolveField('user', () => User)
   getStaffServiceUser(@Parent() { id }: StaffService) {
     return this.prisma.staffService.findUniqueOrThrow({ where: { id } }).user();
   }
