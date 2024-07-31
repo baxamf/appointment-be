@@ -11,10 +11,12 @@ export class UserWorkingDaysResolver {
   constructor(private readonly prisma: PrismaService) {}
 
   @Query(() => [UserWorkingDay], { description: 'Get staff working days' })
-  async getUserWorkingDays(@Args('userId', { nullable: true }) userId: number) {
+  async getUserWorkingDays(
+    @Args('userId', { type: () => Int }) userId: number,
+  ) {
     return this.prisma.user
       .findUniqueOrThrow({ where: { id: userId } })
-      .workingDays();
+      .workingDays({ orderBy: { day: 'asc' } });
   }
 
   @UseGuards(JwtAuthGuard)

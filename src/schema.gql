@@ -135,7 +135,7 @@ type Query {
   getMe: User!
 
   """Get staff working days"""
-  getUserWorkingDays(userId: Float): [UserWorkingDay!]!
+  getUserWorkingDays(userId: Int!): [UserWorkingDay!]!
   getCompanyServices: [CompanyService!]!
   getCompanyService(companyServiceId: Int!): CompanyService!
   getStaffServices(getStaffServicesInput: GetStaffServicesInput): [StaffService!]!

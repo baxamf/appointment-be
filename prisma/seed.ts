@@ -3,7 +3,9 @@ import { usersSeed } from './seed-data.ts/users';
 const prisma = new PrismaClient();
 
 async function main() {
-  await Promise.all(usersSeed.map((user) => prisma.user.upsert(user)));
+  for (const user of usersSeed) {
+    await prisma.user.upsert(user);
+  }
 }
 main()
   .then(async () => {

@@ -28,6 +28,33 @@ export const usersSeed: Prisma.UserUpsertArgs[] = [
           specialization: 'Tattoo artist',
         },
       },
+      workingDays: {
+        createMany: {
+          data: [
+            {
+              day: 1,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 3,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 5,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+          ],
+        },
+      },
       socials: {
         createMany: {
           data: [
@@ -75,6 +102,33 @@ export const usersSeed: Prisma.UserUpsertArgs[] = [
             'https://images.pexels.com/photos/7005737/pexels-photo-7005737.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
           bio: 'Sarah, known as "Sparkle" for her infectious enthusiasm and gentle touch, is a rising star in the black and grey realism world. She brings her passion for art and keen eye for detail to create stunningly realistic tattoos with a distinct soft touch. Sarah specializes in delicate shading and textures, ensuring a beautiful and timeless piece of body art.',
           specialization: 'Tattoo artist',
+        },
+      },
+      workingDays: {
+        createMany: {
+          data: [
+            {
+              day: 2,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 4,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 6,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+          ],
         },
       },
       socials: {
@@ -126,6 +180,33 @@ export const usersSeed: Prisma.UserUpsertArgs[] = [
           specialization: 'Tattoo artist',
         },
       },
+      workingDays: {
+        createMany: {
+          data: [
+            {
+              day: 1,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 3,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+            {
+              day: 5,
+              startHour: 10,
+              startMinute: 0,
+              endHour: 17,
+              endMinute: 0,
+            },
+          ],
+        },
+      },
       socials: {
         createMany: {
           data: [
@@ -149,7 +230,7 @@ export const usersSeed: Prisma.UserUpsertArgs[] = [
               title: `Traditional & Neo-Traditional Tattoos: Classic Designs with Modern Flair`,
               description: `Interested in a tattoo with a timeless appeal? We offer both traditional and neo-traditional tattoo styles. Traditional tattoos feature bold lines, vibrant colors, and classic symbolism, while neo-traditional tattoos incorporate a modern twist on the traditional style, offering bolder outlines and a wider range of colors.`,
               image:
-                'https://images.pexels.com/photos/2126124/pexels-photo-2126124.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                'https://images.pexels.com/photos/2183132/pexels-photo-2183132.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
               order: 3,
             },
           },
