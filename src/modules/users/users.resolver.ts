@@ -46,7 +46,6 @@ export class UsersResolver {
     );
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Query(() => [User], { description: 'Get staff' })
   async getStaff(
     @Args('getStaffInput', { nullable: true }) getStaffInput: GetStaffInput,

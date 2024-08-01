@@ -211,9 +211,12 @@ input CreateUserProfileInput {
   nickName: String
   specialization: String
   phone: String!
-  avatar: String
+  avatar: Upload
   bio: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input UpdateUserProfileInput {
   firstName: String
@@ -221,7 +224,7 @@ input UpdateUserProfileInput {
   nickName: String
   specialization: String
   phone: String
-  avatar: String
+  avatar: Upload
   bio: String
 }
 
@@ -258,14 +261,14 @@ input UpdateUserWorkingDayInput {
 input CreateCompanyServiceInput {
   title: String!
   description: String!
-  image: String!
+  image: Upload!
   order: Int
 }
 
 input UpdateCompanyServiceInput {
   title: String
   description: String
-  image: String
+  image: Upload
   order: Int
 }
 
@@ -274,7 +277,7 @@ input CreateStaffServiceInput {
   serviceId: Int!
   title: String
   description: String
-  image: String
+  image: Upload
 
   """Service price per duration"""
   price: Int
@@ -289,7 +292,7 @@ input UpdateStaffServiceInput {
   serviceId: Int
   title: String
   description: String
-  image: String
+  image: Upload
 
   """Service price per duration"""
   price: Int
@@ -312,7 +315,7 @@ input CreateAppointmentInput {
   staffId: Int!
   targetTime: DateTime!
   description: String
-  images: [String!]
+  images: [Upload!]
 }
 
 input CustomerDataInput {
@@ -326,6 +329,6 @@ input UpdateAppointmentInput {
   staffId: Int
   targetTime: DateTime
   description: String
-  images: [String!]
+  images: [Upload!]
   id: Int!
 }

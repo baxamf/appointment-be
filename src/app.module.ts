@@ -11,6 +11,7 @@ import { CachingModule } from './modules/caching/caching.module';
 import { redisConfig } from './config/redis.config';
 import { ServicesModule } from './modules/services/services.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
+import { CommonModule } from './modules/common/common.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AppointmentsModule } from './modules/appointments/appointments.module';
       isGlobal: true,
       load: [appConfig, redisConfig],
     }),
+    CommonModule,
     CachingModule,
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({

@@ -33,6 +33,7 @@ export class CompanyServicesResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @Public()
   @Mutation(() => CompanyService)
   createCompanyService(
     @Args('createCompanyServiceInput')
@@ -41,6 +42,7 @@ export class CompanyServicesResolver {
     return this.createCompanyServiceUseCase.execute(createCompanyServiceInput);
   }
 
+  @Public()
   @Mutation(() => CompanyService)
   updateCompanyService(
     @Args('companyServiceId', { type: () => Int }) companyServiceId: number,

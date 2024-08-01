@@ -1,4 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { GraphQLUpload, Upload } from 'graphql-upload-minimal';
 
 @InputType()
 export class CreateStaffServiceInput {
@@ -14,8 +15,8 @@ export class CreateStaffServiceInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => String, { nullable: true })
-  image?: string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  image?: Upload['promise'];
 
   @Field(() => Int, {
     nullable: true,

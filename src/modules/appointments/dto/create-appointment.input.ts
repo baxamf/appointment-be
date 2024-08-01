@@ -1,4 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { GraphQLUpload, Upload } from 'graphql-upload-minimal';
 
 @InputType()
 export class CreateAppointmentInput {
@@ -14,6 +15,6 @@ export class CreateAppointmentInput {
   @Field(() => String, { nullable: true })
   description?: string;
 
-  @Field(() => [String], { nullable: true })
-  images?: Array<string>;
+  @Field(() => [GraphQLUpload], { nullable: true })
+  images?: Array<Upload['promise']>;
 }

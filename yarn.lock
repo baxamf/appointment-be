@@ -2213,7 +2213,7 @@ buffer@^5.5.0:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
 
-busboy@^1.0.0:
+busboy@^1.0.0, busboy@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
   integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
@@ -3459,6 +3459,13 @@ graphql-tag@2.12.6:
   integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
   dependencies:
     tslib "^2.1.0"
+
+graphql-upload-minimal@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/graphql-upload-minimal/-/graphql-upload-minimal-1.6.1.tgz#1cdc30a8dbc86f16d90450b6a92364822b07410b"
+  integrity sha512-wNUf/KqA0B/OguL1k6qWa4AmAduLUAhXzovh9i14SKbpBa8HX2vc7f+fR67S0rG7fSpGdM/aivxzC329/+9xXw==
+  dependencies:
+    busboy "^1.6.0"
 
 graphql-ws@5.14.3:
   version "5.14.3"

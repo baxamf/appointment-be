@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional, IsPhoneNumber, IsString, Length } from 'class-validator';
+import { GraphQLUpload, Upload } from 'graphql-upload-minimal';
 
 @InputType()
 export class CreateUserProfileInput {
@@ -31,8 +32,8 @@ export class CreateUserProfileInput {
   phone!: string;
 
   @IsOptional()
-  @Field(() => String, { nullable: true })
-  avatar?: string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  avatar?: Upload['promise'];
 
   @IsOptional()
   @IsString()
