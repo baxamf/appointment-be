@@ -80,7 +80,7 @@ export class UsersResolver {
     return this.prisma.user.findUnique({ where: { id: user.id } }).profile();
   }
 
-  @ResolveField('workingDays', () => UserWorkingDay, { nullable: true })
+  @ResolveField('workingDays', () => [UserWorkingDay], { nullable: true })
   getUserWorkingDays(@Parent() user: User) {
     return this.prisma.user
       .findUnique({ where: { id: user.id } })
