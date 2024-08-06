@@ -23,6 +23,9 @@ import { StaffService } from '../services/staff-services/entities/staff-service.
 import { GetAppointmentFilterInput } from './dto/get-appointment-filter.input';
 import { GetAllAppointmentsUseCase } from './use-cases/get-all-appointments.use-case';
 import { User } from '../users/entities/user.entity';
+import { GetAppointmentAvailableTimesUseCase } from './use-cases/get-appointment-available-times.use-case';
+import { GetAppointmentAvailableTimesInput } from './dto/get-appointment-available-times.input';
+import { GetAppointmentAvailableTimesOutput } from './dto/get-appointment-available-times.output';
 
 @Resolver(() => Appointment)
 export class AppointmentsResolver {
@@ -30,6 +33,7 @@ export class AppointmentsResolver {
     private readonly createAppointmentUseCase: CreateAppointmentUseCase,
     private readonly getStaffAppointmentsUseCase: GetStaffAppointmentsUseCase,
     private readonly getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
+    private readonly getAppointmentAvailableTimesUseCase: GetAppointmentAvailableTimesUseCase,
     private readonly cancelAppointmentUseCase: CancelAppointmentUseCase,
     private readonly updateAppointmentUseCase: UpdateAppointmentUseCase,
     private readonly prisma: PrismaService,
@@ -45,6 +49,18 @@ export class AppointmentsResolver {
     return this.createAppointmentUseCase.execute(
       createAppointmentInput,
       customerDataInput,
+    );
+  }
+
+  @Query(() => [GetAppointmentAvailableTimesOutput], {
+    description: 'Get available target times for appointment',
+  })
+  getAppointmentAvailableTimes(
+    @Args('getAppointmentAvailableTimesInput')
+    getAppointmentAvailableTimesInput: GetAppointmentAvailableTimesInput,
+  ) {
+    return this.getAppointmentAvailableTimesUseCase.execute(
+      getAppointmentAvailableTimesInput,
     );
   }
 

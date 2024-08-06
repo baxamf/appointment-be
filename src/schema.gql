@@ -118,6 +118,10 @@ enum AppointmentStatus {
   CANCELLED
 }
 
+type GetAppointmentAvailableTimesOutput {
+  targetTime: DateTime!
+}
+
 type Query {
   """Refresh access token"""
   refresh: Auth!
@@ -144,6 +148,9 @@ type Query {
   getServiceTags: [ServiceTag!]!
   getCompanyServiceTags(companyServiceId: Int!): [ServiceTag!]!
 
+  """Get available target times for appointment"""
+  getAppointmentAvailableTimes(getAppointmentAvailableTimesInput: GetAppointmentAvailableTimesInput!): [GetAppointmentAvailableTimesOutput!]!
+
   """Get my appointments"""
   getMyAppointments(getAppointmentFilterInput: GetAppointmentFilterInput): [Appointment!]!
 
@@ -157,6 +164,12 @@ input GetStaffInput {
 
 input GetStaffServicesInput {
   serviceId: Int
+}
+
+input GetAppointmentAvailableTimesInput {
+  staffServiceId: Int!
+  staffId: Int!
+  targetTime: DateTime!
 }
 
 input GetAppointmentFilterInput {

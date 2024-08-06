@@ -5,6 +5,7 @@ import { GetStaffAppointmentsUseCase } from './use-cases/get-staff-appointments.
 import { CancelAppointmentUseCase } from './use-cases/cancel-appointment.use-case';
 import { UpdateAppointmentUseCase } from './use-cases/update-appointment.use-case';
 import { GetAllAppointmentsUseCase } from './use-cases/get-all-appointments.use-case';
+import { GetAppointmentAvailableTimesUseCase } from './use-cases/get-appointment-available-times.use-case';
 
 @Module({
   providers: [
@@ -12,6 +13,7 @@ import { GetAllAppointmentsUseCase } from './use-cases/get-all-appointments.use-
     CreateAppointmentUseCase,
     GetStaffAppointmentsUseCase,
     GetAllAppointmentsUseCase,
+    GetAppointmentAvailableTimesUseCase,
     CancelAppointmentUseCase,
     UpdateAppointmentUseCase,
   ],
