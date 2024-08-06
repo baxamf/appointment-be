@@ -38,11 +38,14 @@ export class CreateAppointmentUseCase {
           connect: { id: staffServiceId },
         },
         customer: {
-          create: {
-            email,
-            password,
-            role: 'USER',
-            profile: { create: profile },
+          connectOrCreate: {
+            where: { email },
+            create: {
+              email,
+              password,
+              role: 'USER',
+              profile: { create: profile },
+            },
           },
         },
       },
