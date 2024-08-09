@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 import { Public } from 'src/modules/common/decorators/public.decorator';
 import { ServiceTag } from '../service-tags/entities/service-tag.entity';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { StaffService } from '../staff-services/entities/staff-service.entity';
 
 @UseGuards(JwtAuthGuard)
 @Resolver(() => CompanyService)
@@ -76,8 +77,15 @@ export class CompanyServicesResolver {
     return this.removeCompanyServiceUseCase.execute(companyServiceId);
   }
 
+  @ResolveField('staffServices', () => [StaffService], { nullable: true })
+  getStaffServices(@Parent() service: CompanyService) {
+    return this.prisma.companyService
+      .findUnique({ where: { id: service.id } })
+      .staffServices();
+  }
+
   @ResolveField('tags', () => [ServiceTag], { nullable: true })
-  getUserProfile(@Parent() service: CompanyService) {
+  getServiceTags(@Parent() service: CompanyService) {
     return this.prisma.companyService
       .findUnique({ where: { id: service.id } })
       .tags();
