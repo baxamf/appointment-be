@@ -3,6 +3,7 @@ import { UserRole } from '../enums/user-role.enum';
 import { UserProfile } from './user-profile.entity';
 import { UserSocial } from './user-social.entity';
 import { UserWorkingDay } from './user-working-day.entity';
+import { StaffService } from 'src/modules/services/staff-services/entities/staff-service.entity';
 @ObjectType()
 export class User {
   @Field(() => Int, { nullable: false })
@@ -28,4 +29,7 @@ export class User {
 
   @Field(() => [UserSocial], { nullable: true })
   socials?: Array<UserSocial>;
+
+  @Field(() => [StaffService], { nullable: true })
+  services?: Array<StaffService>;
 }

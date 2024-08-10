@@ -23,6 +23,7 @@ import { GetStaffUseCase } from './use-cases/get-staff.use-case';
 import { GetStaffInput } from './dto/get-staff.input';
 import { UserWorkingDay } from './entities/user-working-day.entity';
 import { User } from './entities/user.entity';
+import { StaffService } from '../services/staff-services/entities/staff-service.entity';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -90,5 +91,10 @@ export class UsersResolver {
   @ResolveField('socials', () => [UserSocial], { nullable: true })
   getUserSocials(@Parent() user: User) {
     return this.prisma.user.findUnique({ where: { id: user.id } }).socials();
+  }
+
+  @ResolveField('services', () => [StaffService], { nullable: true })
+  getUserServices(@Parent() user: User) {
+    return this.prisma.user.findUnique({ where: { id: user.id } }).services();
   }
 }

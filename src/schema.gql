@@ -31,6 +31,36 @@ type UserWorkingDay {
   userId: Int!
 }
 
+type ServiceTag {
+  id: Int!
+  title: String!
+}
+
+type CompanyService {
+  id: Int!
+  title: String!
+  description: String!
+  image: String!
+  order: Int!
+  staffServices: [StaffService!]
+  tags: [ServiceTag!]
+}
+
+type StaffService {
+  id: Int!
+  userId: Int!
+  serviceId: Int!
+  title: String
+  description: String
+  image: String
+  price: Int
+  duration: Int!
+  order: Int!
+  user: User!
+  service: CompanyService!
+  tags: [ServiceTag!]
+}
+
 type User {
   id: Int!
   email: String!
@@ -39,6 +69,7 @@ type User {
   profile: UserProfile
   workingDays: [UserWorkingDay!]
   socials: [UserSocial!]
+  services: [StaffService!]
 }
 
 """User roles"""
@@ -64,36 +95,6 @@ type Auth {
 type MessageResponse {
   """Response message"""
   message: String!
-}
-
-type ServiceTag {
-  id: Int!
-  title: String!
-}
-
-type StaffService {
-  id: Int!
-  userId: Int!
-  serviceId: Int!
-  title: String
-  description: String
-  image: String
-  price: Int
-  duration: Int!
-  order: Int!
-  user: User!
-  service: CompanyService!
-  tags: [ServiceTag!]
-}
-
-type CompanyService {
-  id: Int!
-  title: String!
-  description: String!
-  image: String!
-  order: Int!
-  staffServices: [StaffService!]
-  tags: [ServiceTag!]
 }
 
 type Appointment {
