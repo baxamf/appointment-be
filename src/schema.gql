@@ -139,6 +139,9 @@ type Query {
   """Get my user data"""
   getMe: User!
 
+  """Get my profile data"""
+  getMyProfile: UserProfile!
+
   """Get staff working days"""
   getUserWorkingDays(userId: Int!): [UserWorkingDay!]!
   getCompanyServices: [CompanyService!]!

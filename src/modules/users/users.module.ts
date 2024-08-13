@@ -8,10 +8,12 @@ import { UpdateUserProfileUseCase } from './use-cases/update-user-profile.use-ca
 import { GetStaffUseCase } from './use-cases/get-staff.use-case';
 import { UserSocialsResolver } from './user-socials.resolver';
 import { UserWorkingDaysResolver } from './user-working-days.resolver';
+import { UserProfilesResolver } from './user-profiles.resolver';
 
 @Module({
   providers: [
     UsersResolver,
+    UserProfilesResolver,
     UserSocialsResolver,
     UserWorkingDaysResolver,
     CreateUserUseCase,

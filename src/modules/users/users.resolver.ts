@@ -17,8 +17,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserSocial } from './entities/user-social.entity';
 import { CurrentUser } from '../common/decorators/get-current-user.decorator';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
-import { UpdateUserProfileInput } from './dto/update-user-profile.input';
-import { UpdateUserProfileUseCase } from './use-cases/update-user-profile.use-case';
 import { GetStaffUseCase } from './use-cases/get-staff.use-case';
 import { GetStaffInput } from './dto/get-staff.input';
 import { UserWorkingDay } from './entities/user-working-day.entity';
@@ -31,7 +29,6 @@ export class UsersResolver {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
     private readonly getStaffUseCase: GetStaffUseCase,
-    private readonly updateUserProfileUseCase: UpdateUserProfileUseCase,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -64,16 +61,6 @@ export class UsersResolver {
   @Query(() => User, { description: 'Get my user data' })
   async getMe(@CurrentUser('id') id: number) {
     return this.getUserUseCase.execute(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Mutation(() => UserProfile)
-  updateMyProfile(
-    @CurrentUser('id') id: number,
-    @Args('updateUserProfileInput')
-    updateUserProfileInput: UpdateUserProfileInput,
-  ) {
-    return this.updateUserProfileUseCase.execute(id, updateUserProfileInput);
   }
 
   @ResolveField('profile', () => UserProfile, { nullable: true })
