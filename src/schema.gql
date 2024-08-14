@@ -144,6 +144,9 @@ type Query {
 
   """Get staff working days"""
   getUserWorkingDays(userId: Int!): [UserWorkingDay!]!
+
+  """Get my schedule"""
+  getMySchedule: [UserWorkingDay!]!
   getCompanyServices: [CompanyService!]!
   getCompanyService(companyServiceId: Int!): CompanyService!
   getStaffServices(getStaffServicesInput: GetStaffServicesInput): [StaffService!]!

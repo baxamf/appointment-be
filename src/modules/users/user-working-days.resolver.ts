@@ -5,6 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserWorkingDay } from './entities/user-working-day.entity';
 import { CreateUserWorkingDayInput } from './dto/create-user-working-day.input';
 import { UpdateUserWorkingDayInput } from './dto/update-user-working-day.input ';
+import { CurrentUser } from '../common/decorators/get-current-user.decorator';
 
 @Resolver(() => UserWorkingDay)
 export class UserWorkingDaysResolver {
@@ -16,6 +17,14 @@ export class UserWorkingDaysResolver {
   ) {
     return this.prisma.user
       .findUniqueOrThrow({ where: { id: userId } })
+      .workingDays({ orderBy: { day: 'asc' } });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [UserWorkingDay], { description: 'Get my schedule' })
+  async getMySchedule(@CurrentUser('id') id: number) {
+    return this.prisma.user
+      .findUniqueOrThrow({ where: { id } })
       .workingDays({ orderBy: { day: 'asc' } });
   }
 
