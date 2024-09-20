@@ -16,6 +16,14 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@api": ["apps/api-gateway/src"],
+      "@api/*": ["apps/api-gateway/src/*"],
+      "@common": ["libs/common/src"],
+      "@common/*": ["libs/common/src/*"],
+      "@config": ["config"],
+      "@config/*": ["config/*"]
+    }
   }
 }
